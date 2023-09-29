@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report
 
 cols = ["fLength", "fWidth", "fSize", "fConc", "fConc1", "fAsym", "fM3Long", "fM3Trans", "fAlpha", "fDist", "class"]
 df = pd.read_csv("magic04.data", names=cols)
@@ -38,3 +40,11 @@ def scale_dataset(dataframe, oversample=False):
 train, X_train, y_train = scale_dataset(train, oversample=True)
 train, X_valid, y_valid = scale_dataset(valid, oversample=False)
 train, X_test, y_test = scale_dataset(test, oversample=False)
+
+# kNN 
+
+knn_model = KNeighborsClassifier(n_neighbors=5)
+knn_model.fit(X_train, y_train)
+y_pred = knn_model.predict(X_test)
+
+print(classification_report(y_test, y_pred))
