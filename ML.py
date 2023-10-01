@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
+from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
 
 cols = ["fLength", "fWidth", "fSize", "fConc", "fConc1", "fAsym", "fM3Long", "fM3Trans", "fAlpha", "fDist", "class"]
 df = pd.read_csv("magic04.data", names=cols)
@@ -43,8 +45,25 @@ train, X_test, y_test = scale_dataset(test, oversample=False)
 
 # kNN 
 
-knn_model = KNeighborsClassifier(n_neighbors=5)
-knn_model.fit(X_train, y_train)
-y_pred = knn_model.predict(X_test)
+# knn_model = KNeighborsClassifier(n_neighbors=5)
+# knn_model.fit(X_train, y_train)
+# y_pred = knn_model.predict(X_test)
 
+# print(classification_report(y_test, y_pred))
+
+
+# Naive Bayes
+
+# nb_model = GaussianNB()
+# nb_model = nb_model.fit(X_train, y_train)
+
+# y_pred = nb_model.predict(X_test)
+# print(classification_report(y_test, y_pred))
+
+# Log Regression 
+
+log_model = LogisticRegression()
+log_model = log_model.fit(X_train, y_train)
+
+y_pred = log_model.predict(X_test)
 print(classification_report(y_test, y_pred))
