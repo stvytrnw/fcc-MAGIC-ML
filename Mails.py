@@ -12,7 +12,8 @@ df = pd.read_csv("emails.csv")
 
 train, valid, test = np.split(df.sample(frac=1), [int(0.6*len(df)), int(0.8*len(df))])
 
-print(test)
+print(len(train[train['Prediction'] == 0]))
+print(len(train[train['Prediction'] == 1]))
 
 def scale_dataset(dataframe, oversample=False):
     X = dataframe[dataframe.columns[1:-1]].values
