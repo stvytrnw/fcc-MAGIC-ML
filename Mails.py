@@ -11,7 +11,7 @@ df = pd.read_csv("emails.csv")
 
 X = df[df.columns[1:-1]].values
 y = df[df.columns[-1]].values
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, shuffle=True)
 
 # def scale_dataset(X, y, oversample=False):
 #     scaler = StandardScaler()
@@ -23,7 +23,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_
     
 #     return X, y
 
-# X_train, y_train = scale_dataset(X_train, y_train, oversample=True)
+# X_train, y_train = scale_dataset(X_train, y_train, oversample=False)
 # X_test, y_test = scale_dataset(X_test, y_test, oversample=False)
 
 print('kNN')
