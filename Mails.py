@@ -1,59 +1,57 @@
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import r2_score
 
 df = pd.read_csv("emails.csv")
 
-train, valid, test = np.split(df.sample(frac=1), [int(0.6*len(df)), int(0.8*len(df))])
+X = df[df.columns[1:-1]].values
+y = df[df.columns[-1]].values
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42, shuffle=True)
 
-print(len(train[train['Prediction'] == 0]))
-print(len(train[train['Prediction'] == 1]))
-
-def scale_dataset(dataframe, oversample=False):
-    X = dataframe[dataframe.columns[1:-1]].values
-    y = dataframe[dataframe.columns[-1]].values
+# def scale_dataset(X, y, oversample=False):
+#     scaler = StandardScaler()
+#     X = scaler.fit_transform(X)
+        
+#     if oversample:
+#         ros = RandomOverSampler()
+#         X , y = ros.fit_resample(X,y)
     
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X)
-    
-    if oversample:
-        ros = RandomOverSampler()
-        X , y = ros.fit_resample(X,y)
-    
-    data = np.hstack((X, np.reshape(y, (-1, 1))))
-    
-    return data, X, y
+#     return X, y
 
-train, X_train, y_train = scale_dataset(train, oversample=True)
-train, X_valid, y_valid = scale_dataset(valid, oversample=False)
-train, X_test, y_test = scale_dataset(test, oversample=False)
+# X_train, y_train = scale_dataset(X_train, y_train, oversample=True)
+# X_test, y_test = scale_dataset(X_test, y_test, oversample=False)
 
-# kNN 
+print('kNN')
+model = KNeighborsClassifier(n_neighbors=5)
+print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
+print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
+scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+print('Scores: {}'.format(scores))
+print('Mean score: {}'.format(scores.mean()))
+print('Std score: {}'.format(scores.std()))
+print()
 
-# knn_model = KNeighborsClassifier(n_neighbors=5)
-# knn_model.fit(X_train, y_train)
-# y_pred = knn_model.predict(X_test)
+print('Naive Bayes')
+model = GaussianNB()
+print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
+print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
+scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+print('Scores: {}'.format(scores))
+print('Mean score: {}'.format(scores.mean()))
+print('Std score: {}'.format(scores.std()))
+print()
 
-# print(classification_report(y_test, y_pred))
-
-# Naive Bayes
-
-# nb_model = GaussianNB()
-# nb_model = nb_model.fit(X_train, y_train)
-
-# y_pred = nb_model.predict(X_test)
-# print(classification_report(y_test, y_pred))
-
-# Log Regression 
-
-log_model = LogisticRegression()
-log_model = log_model.fit(X_train, y_train)
-
-y_pred = log_model.predict(X_test)
-print(classification_report(y_test, y_pred))
+print('Log Regression')
+model = LogisticRegression(max_iter=1000)
+print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
+print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
+scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+print('Scores: {}'.format(scores))
+print('Mean score: {}'.format(scores.mean()))
+print('Std score: {}'.format(scores.std()))
+print()
