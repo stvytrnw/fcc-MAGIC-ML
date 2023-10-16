@@ -1,11 +1,12 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from imblearn.over_sampling import RandomOverSampler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn import svm
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import r2_score
+
 
 df = pd.read_csv("emails.csv")
 
@@ -58,6 +59,16 @@ print()
 
 print('Random Forest Regressor')
 model = RandomForestRegressor()
+print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
+print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
+scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+print('Scores: {}'.format(scores))
+print('Mean score: {}'.format(scores.mean()))
+print('Std score: {}'.format(scores.std()))
+print()
+
+print('SVM')
+model = svm.SVC(kernel='linear')
 print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
 print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
 scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
