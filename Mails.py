@@ -130,7 +130,7 @@ def train_model(X_train, y_train, num_nodes, dropout_prob, lr, batch_size, epoch
 least_val_loss = float('inf')
 least_loss_model = None
 epochs=100
-for num_nodes in [16, 32, 64]:
+for num_nodes in [1000, 2000, 3000]:
   for dropout_prob in[0, 0.2]:
     for lr in [0.01, 0.005, 0.001]:
       for batch_size in [32, 64, 128]:
