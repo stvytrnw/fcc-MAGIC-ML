@@ -67,15 +67,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # print('Std score: {}'.format(scores.std()))
 # print()
 
-# print('NEURAL NETWORK')
-# model = MLPClassifier(random_state=42, max_iter=1000, hidden_layer_sizes=[3000,3000, 3000])
-# print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
-# print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
-# scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
-# print('Scores: {}'.format(scores))
-# print('Mean score: {}'.format(scores.mean()))
-# print('Std score: {}'.format(scores.std()))
-# print()
+print('NEURAL NETWORK')
+model = MLPClassifier(random_state=42, max_iter=1000, hidden_layer_sizes=[3000,3000, 3000])
+print('Train R2: {}'.format(r2_score(y_train, model.fit(X_train, y_train).predict(X_train))))
+print('Test R2: {}'.format(r2_score(y_test, model.fit(X_train, y_train).predict(X_test))))
+scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+print('Scores: {}'.format(scores))
+print('Mean score: {}'.format(scores.mean()))
+print('Std score: {}'.format(scores.std()))
+print()
 
 print('NEURAL NETWORK')
 def plot_history(history):
@@ -103,6 +103,8 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dropout(0.2),
     tf.keras.layers.Dense(1, activation='sigmoid')
 ])
+
+model.summary()
 
 model.compile(optimizer=tf.keras.optimizers.Adam(0.005), loss='binary_crossentropy',
                 metrics=['accuracy'])
